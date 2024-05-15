@@ -192,7 +192,7 @@ window.onresize = () => birthday.resize()
 document.onclick = evt => birthday.onClick(evt)
 document.ontouchstart = evt => birthday.onClick(evt)
 
-// document.getElementById("birthday").style.background = "url('https://i.postimg.cc/pXfywS0Q/lookatthesky.png')";
+// document.getElementById("birthday").style.background = "url('ruesjo.github.io-main\img\lookatthesky.png')";
 
 // var background= new Image();
 //background.src= "https://i.postimg.cc/pXfywS0Q/lookatthesky.png"
