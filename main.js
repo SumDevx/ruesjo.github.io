@@ -90,14 +90,15 @@ class Birthday {
   }
   
   update(delta) {
-    ctx.globalCompositeOperation = 'hard-light'
+    ctx.globalCompositeOperation = 'difference'
     ctx.fillStyle = `rgba(20,20,20,${ 7 * delta })`
-    ctx.fillRect(0, 0, this.width, this.height)
+    
+    ctx.clearRect(0, 0, this.width, this.height)
 
     ctx.globalCompositeOperation = 'lighter'
     for (let firework of this.fireworks) firework.update(delta)
 
-    // if enough time passed... create new new firework
+    // if enough time passed... create new firework
     this.counter += delta * 3 // each second
     if (this.counter >= 1) {
       this.fireworks.push(new Firework(
@@ -191,6 +192,15 @@ window.onresize = () => birthday.resize()
 document.onclick = evt => birthday.onClick(evt)
 document.ontouchstart = evt => birthday.onClick(evt)
 
+// document.getElementById("birthday").style.background = "url('https://i.postimg.cc/pXfywS0Q/lookatthesky.png')";
+
+// var background= new Image();
+//background.src= "https://i.postimg.cc/pXfywS0Q/lookatthesky.png"
+
+//background.onload = function(){
+//  ctx.drawImage(background,0,0);
+//}
+
   ;(function loop(){
   	requestAnimationFrame(loop)
 
@@ -240,3 +250,53 @@ function countUpFromTime(countFrom, id) {
   clearTimeout(countUpFromTime.interval);
   countUpFromTime.interval = setTimeout(function(){ countUpFromTime(countFrom, id); }, 1000);
 }
+
+
+
+// New Timer Code here
+
+
+// Timer Banner to Auto-Destruct
+
+// Declare time variables and link them to math.floor function to calculate DD:HH:MM:SS
+function getTimeRemaining(endtime) {
+  var t = Date.parse(endtime) - Date.parse(new Date());
+  var seconds = Math.floor((t / 1000) % 60);
+  var minutes = Math.floor((t / 1000 / 60) % 60);
+  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+  var days = Math.floor(t / (1000 * 60 * 60 * 24));
+  return {
+      'total': t,
+      'days': days,
+      'hours': hours,
+      'minutes': minutes,
+      'seconds': seconds
+  };
+}
+
+function initializeClock(id, endtime) {
+  var clock = document.getElementById(id);
+  var daysSpan = clock.querySelector('.days');
+  var hoursSpan = clock.querySelector('.hours');
+  var minutesSpan = clock.querySelector('.minutes');
+  var secondsSpan = clock.querySelector('.seconds');
+
+  function updateClock() {
+      var t = getTimeRemaining(endtime);
+
+      daysSpan.innerHTML = ('00' + t.days).slice(-2);
+      hoursSpan.innerHTML = ('00' + t.hours).slice(-2);
+      minutesSpan.innerHTML = ('00' + t.minutes).slice(-2);
+      secondsSpan.innerHTML = ('00' + t.seconds).slice(-2);
+
+      if (t.total <= 0) {
+          clearInterval(timeinterval);
+          $('.countdown').remove();
+      }
+  }
+
+  updateClock();
+  var timeinterval = setInterval(updateClock, 1000);
+}
+var deadline = 'May 17, 2024 00:00 UTC+0530';
+initializeClock('countdown', deadline);
